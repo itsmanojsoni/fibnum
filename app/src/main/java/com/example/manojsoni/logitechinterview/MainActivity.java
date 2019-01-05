@@ -2,6 +2,8 @@ package com.example.manojsoni.logitechinterview;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
@@ -24,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    RecyclerView fibNumRv;
+
+    private FibNumAdapter fibNumAdapter;
+
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -34,6 +40,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        fibNumRv = findViewById(R.id.fibNumListRv);
+
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        fibNumRv.setLayoutManager(layoutManager);
+        fibNumAdapter = new FibNumAdapter();
+        fibNumRv.setAdapter(fibNumAdapter);
     }
 
     @Override
@@ -56,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "Fib Number is "+s);
                         }
 
+                        fibNumAdapter.setData(strings);
                     }
 
                     @Override
@@ -77,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public List<String> call() throws Exception {
 
-                long[] output = getFibNum(100);
+                long[] output = getFibNum(10);
 
                 List<String> result = new ArrayList<>();
                 for (int i = 0; i < output.length; i++) {
