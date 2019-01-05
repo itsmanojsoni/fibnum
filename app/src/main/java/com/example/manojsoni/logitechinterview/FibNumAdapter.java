@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class FibNumAdapter extends RecyclerView.Adapter<FibNumAdapter.ViewHolder> {
 
     private List<String> fibNumerList = new ArrayList<>();
@@ -38,10 +37,6 @@ public class FibNumAdapter extends RecyclerView.Adapter<FibNumAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(FibNumAdapter.ViewHolder holder, int position) {
-        Log.d(TAG, "on BindView Holder and position = "+position);
-
-//      holder.bind(fibNumberList.get(position));
-
         holder.fibNumIndex.setText(String.valueOf(position));
         holder.fibNumVal.setText(String.valueOf(fibNumerList.get(position)));
     }
@@ -53,18 +48,13 @@ public class FibNumAdapter extends RecyclerView.Adapter<FibNumAdapter.ViewHolder
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
-
         TextView fibNumIndex;
         TextView fibNumVal;
 
-
-        public ViewHolder (View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             fibNumIndex = itemView.findViewById(R.id.fibNumberIndex);
             fibNumVal = itemView.findViewById(R.id.fibNumber);
         }
-
-
     }
 }
