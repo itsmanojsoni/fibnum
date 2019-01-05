@@ -5,9 +5,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,19 +40,55 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        callThisMethod();
+        Observable<List<String>> fibObservable =  callThisMethod();
+
+        fibObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<String>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<String> strings) {
+
+                        for (String s : strings) {
+                            Log.d(TAG, "Fib Number is "+s);
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
-    private ArrayList<Long>  callThisMethod() {
+    private Observable<List<String>>  callThisMethod() {
 
+        return Observable.fromCallable(new Callable<List<String>>() {
 
-        long[] output = getFibNum(100);
+            @Override
+            public List<String> call() throws Exception {
 
-        for (int i = 0; i < output.length; i++) {
+                long[] output = getFibNum(100);
 
-            Log.d(TAG, "output = "+output[i]);
-        }
+                List<String> result = new ArrayList<>();
+                for (int i = 0; i < output.length; i++) {
+                    result.add(String.valueOf(output[i]));
+                }
 
+                return result;
+
+            }
+        });
     }
 
     /**
