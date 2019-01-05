@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">LogitechInterview</string>
+    <string name="java">Java</string>
+    <string name="jni">JNI</string>
+    <string name="retrieve_btn_name">Retrieve</string>
+    <string name="next_btn_name">Next</string>
+    <string name="reset_btn_name">Reset</string>
+    <string name="clear_btn_name">Clear</string>
 </resources>

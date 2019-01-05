@@ -6,14 +6,101 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/sample_text"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fibNumListRv"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/buttonContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fibNumListRv"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <RadioGroup
+            android:id="@+id/radioBtnContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <RadioButton
+                android:id="@+id/Java"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize"
+                android:layout_marginStart="@dimen/largeMargin"
+                android:layout_marginEnd="@dimen/largeMargin"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/java" />
+
+            <RadioButton
+                android:id="@+id/JNI"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize"
+                android:layout_marginStart="@dimen/largeMargin"
+                android:layout_marginEnd="@dimen/largeMargin"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/jni" />
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/clearBtn"
+            android:text="@string/clear_btn_name"
+            android:textSize="@dimen/textSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/largeMargin"
+            android:layout_marginEnd="@dimen/largeMargin"
+            app:layout_constraintStart_toEndOf="@id/radioBtnContainer"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <Button
+            android:id="@+id/resetBtn"
+            android:text="@string/reset_btn_name"
+            android:textSize="@dimen/textSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/largeMargin"
+            android:layout_marginEnd="@dimen/largeMargin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/clearBtn" />
+
+        <Button
+            android:id="@+id/retrieveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/retrieve_btn_name"
+            android:textSize="@dimen/textSize"
+            android:layout_marginStart="@dimen/largeMargin"
+            android:layout_marginEnd="@dimen/largeMargin"
+            app:layout_constraintTop_toBottomOf="@id/clearBtn"
+            app:layout_constraintStart_toEndOf="@id/radioBtnContainer"/>
+
+        <Button
+            android:id="@+id/nextBtn"
+            android:text="@string/next_btn_name"
+            android:textSize="@dimen/textSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/largeMargin"
+            android:layout_marginEnd="@dimen/largeMargin"
+            app:layout_constraintTop_toBottomOf="@id/resetBtn"
+            app:layout_constraintStart_toEndOf="@id/retrieveBtn"/>
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="RadioBtnStartMargin">16dp</dimen>
+    <dimen name="RadioBtnEndMargin">16dp</dimen>
+
+    <dimen name="smallMargin">8dp</dimen>
+
+    <dimen name="largeMargin">16dp</dimen>
+
+    <dimen name="extraLargeMargin">24dp</dimen>
+
+    <dimen name="extraextraLargeMargin">32dp</dimen>
+
+    <dimen name="textSize">16sp</dimen>
+
+
+</resources>

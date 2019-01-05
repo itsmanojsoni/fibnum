@@ -3,6 +3,8 @@ package com.example.manojsoni.logitechinterview;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
@@ -32,9 +34,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Example of a call to a native method
-        TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
     }
 
     @Override
@@ -97,4 +96,21 @@ public class MainActivity extends AppCompatActivity {
      */
     public native String stringFromJNI();
     public native long[] getFibNum (int num);
+
+    public void onRadioButtonClicked(View view) {
+
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.Java:
+                if (checked)
+                    // Pirates are the best
+                    break;
+            case R.id.JNI:
+                if (checked)
+                    // Ninjas rule
+                    break;
+        }
+    }
 }
