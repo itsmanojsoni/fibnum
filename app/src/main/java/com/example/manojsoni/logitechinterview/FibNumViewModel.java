@@ -24,11 +24,7 @@ public class FibNumViewModel extends ViewModel {
 
     private static final String TAG = FibNumViewModel.class.getSimpleName();
 
-    private MutableLiveData<List<String>> fibNumList;
-
-    static {
-        System.loadLibrary("native-lib");
-    }
+    private MutableLiveData<List<String>> fibNumList = new MutableLiveData<>();
 
 
     public LiveData<List<String>> getFibNumberList() {
@@ -38,12 +34,14 @@ public class FibNumViewModel extends ViewModel {
 
     public void getFibNumberList(DATASOURCE datasource, int number) {
 
-        Observable<List<String>> observable = null;
-        if (datasource == DATASOURCE.JAVA) {
-            observable= getFibNumerFromJAVA(number);
-        } else {
-            observable = getFibNumerFromJNI(number);
-        }
+//        if (datasource == DATASOURCE.JAVA) {
+//            observable = getFibNumerFromJAVA(number);
+//        } else {
+//            observable = getFibNumerFromJNI(number);
+//        }
+
+
+        Observable<List<String>> observable = FibNumDataSource.getFibNumberList(number);
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -60,7 +58,7 @@ public class FibNumViewModel extends ViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "Error "+e.getMessage());
+                        Log.e(TAG, "Error " + e.getMessage());
                     }
 
                     @Override
@@ -70,32 +68,6 @@ public class FibNumViewModel extends ViewModel {
                 });
 
     }
-
-    private Observable<List<String>> getFibNumerFromJAVA(final int number) {
-        return Observable.fromCallable(new Callable<List<String>>() {
-            @Override
-            public List<String> call() throws Exception {
-                List<String> result = FibNumDataSource.getFibNumberList(number);
-                return result;
-            }
-        });
-    }
-
-
-    private Observable<List<String>> getFibNumerFromJNI(final int number) {
-        return Observable.fromCallable(new Callable<List<String>>() {
-            @Override
-            public List<String> call() throws Exception {
-                long[] output = getFibNum(number);
-                List<String> result = new ArrayList<>();
-                for (int i = 0; i < output.length; i++) {
-                    result.add(String.valueOf(output[i]));
-                }
-                return result;
-            }
-        });
-    }
-
-    public native long[] getFibNum(int num);
-
 }
+
+

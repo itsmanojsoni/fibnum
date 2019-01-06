@@ -65,36 +65,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        Observable<List<String>> fibObservable =  callThisMethod();
-//
-//        fibObservable.subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<List<String>>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<String> strings) {
-//
-//                        for (String s : strings) {
-//                            Log.d(TAG, "Fib Number is "+s);
-//                        }
-//
-//                        fibNumAdapter.setData(strings);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
     }
 
     private void subsribeToViewModel() {
