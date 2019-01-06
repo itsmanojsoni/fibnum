@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FibNumAdapter fibNumAdapter;
 
-    private static final int MAX_FIB_NUM_INDEX = 50;
+    private static final int MAX_FIB_NUM_INDEX = 70;
 
     private FibNumViewModel fibNumViewModel;
 
@@ -133,7 +133,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUi() {
-        if (endIndex < fibNumberList.size()) {
+        if (endIndex <= fibNumberList.size()) {
+            Log.d(TAG, "start Index = "+startIndex);
+            Log.d(TAG, "end Index = "+endIndex);
             fibNumAdapter.setData(startIndex, fibNumberList.subList(startIndex, endIndex));
         }
     }
