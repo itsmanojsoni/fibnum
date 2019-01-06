@@ -153,7 +153,7 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
             if (endIndex > movieList.size()) {
                 endIndex = movieList.size();
             }
-            
+
             movieListAdapter.setMovieList(movieList.subList(startIndex, endIndex));
         }
     }

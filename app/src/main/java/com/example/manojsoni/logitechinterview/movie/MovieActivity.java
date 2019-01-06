@@ -35,7 +35,8 @@ public class MovieActivity extends AppCompatActivity implements
             movieListFragment= MovieListFragment.newInstance();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, movieListFragment)
-                    .commitNow();
+                    .addToBackStack(null)
+                    .commit();
         }
         subscribeToViewModel();
     }
@@ -70,7 +71,8 @@ public class MovieActivity extends AppCompatActivity implements
         movieDatabaseFragment =    MovieDatabaseFragment.newInstance();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, movieDatabaseFragment)
-                .commitNow();
+                .addToBackStack(null)
+                .commit();
 
         viewModel.loadMoviesDatabase(LocalMovieDataSource.getInstance(this));
 
