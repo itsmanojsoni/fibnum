@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startIndex = 0;
+                endIndex = NUMBER_PER_PAGE;
+                updateUi();
 
             }
         });
@@ -87,10 +90,11 @@ public class MainActivity extends AppCompatActivity {
         retrieveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startIndex = endIndex;
+                endIndex = startIndex + NUMBER_PER_PAGE;
+                updateUi();
             }
         });
-
     }
 
     private void initUi() {
