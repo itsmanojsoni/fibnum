@@ -7,9 +7,14 @@ import android.arch.persistence.room.Query;
 
 import com.example.manojsoni.logitechinterview.model.Movie;
 
+import java.util.List;
+
 @Dao
 public interface MovieDao {
 
+
+    @Query("SELECT * FROM movies")
+    List<Movie> getMovies();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMovie(Movie movie);

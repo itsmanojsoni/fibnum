@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.example.manojsoni.logitechinterview.model.Movie;
 
+import java.util.List;
+
 public class LocalMovieDataSource implements MovieDataSource {
 
     private static volatile LocalMovieDataSource INSTANCE;
@@ -37,5 +39,10 @@ public class LocalMovieDataSource implements MovieDataSource {
     public void deleteAllMovies() {
         movieDao.deleteAllMovies();
 
+    }
+
+    @Override
+    public List<Movie> getAllMovies() {
+        return movieDao.getMovies();
     }
 }
