@@ -9,13 +9,17 @@ import com.example.manojsoni.logitechinterview.database.LocalMovieDataSource;
 import com.example.manojsoni.logitechinterview.model.Movie;
 import com.example.manojsoni.logitechinterview.repository.MovieRepository;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.internal.operators.observable.ObservableFromCallable;
 import rx.Observer;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MovieViewModel extends ViewModel {
@@ -26,7 +30,6 @@ public class MovieViewModel extends ViewModel {
 
 
     private MutableLiveData<List<Movie>> movieListDatabaseLiveData = new MutableLiveData<>();
-
 
 
     public LiveData<List<Movie>> getMovieListLiveData() {
@@ -45,7 +48,22 @@ public class MovieViewModel extends ViewModel {
 
 
     public void loadMovieList() {
-        MovieRepository.getInstance().getMovieList().subscribeOn(Schedulers.io())
+        MovieRepository.getInstance().getMovieList().map(new Func1<List<Movie>, List<Movie>>() {
+            @Override
+            public List<Movie> call(List<Movie> movies) {
+
+
+                Collections.sort(movies, new Comparator<Movie>() {
+                    @Override
+                    public int compare(Movie movie1, Movie movie2) {
+                        return movie1.getTitle().compareToIgnoreCase(movie2.getTitle());
+                    }
+                });
+
+                return movies;
+            }
+        }).
+                subscribeOn(Schedulers.io())
                 .subscribe(new Observer<List<Movie>>() {
                     @Override
                     public void onCompleted() {
@@ -85,9 +103,9 @@ public class MovieViewModel extends ViewModel {
                     @Override
                     public void onNext(List<Movie> movies) {
 
-                        for (int i = 0; i < movies.size(); i++) {
-                            Log.d(TAG, "Movie Title here is  = " + movies.get(i).getTitle());
-                        }
+//                        for (int i = 0; i < movies.size(); i++) {
+//                            Log.d(TAG, "Movie Title here is  = " + movies.get(i).getTitle());
+//                        }
                         movieListDatabaseLiveData.postValue(movies);
                     }
 

@@ -19,6 +19,7 @@ import com.example.manojsoni.logitechinterview.model.Movie;
 import com.example.manojsoni.logitechinterview.movie.MovieViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -74,13 +75,11 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
 
         movieRv = getActivity().findViewById(R.id.movieListRv);
         nextBtn = getActivity().findViewById(R.id.nextBtn);
+        Button deleteAllBtn = getActivity().findViewById(R.id.DeleteMovieListAllBtn);
+        Button sortBtn = getActivity().findViewById(R.id.sortBtn);
+        Button retrieveBtn  = getActivity().findViewById(R.id.retrieveBtn);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        movieRv.setLayoutManager(layoutManager);
-
-        movieListAdapter = new MovieListAdapter(this);
-        movieRv.setAdapter(movieListAdapter);
+        initUi();
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +88,42 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
                 callback.onNextClicked();
             }
         });
+
+        deleteAllBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movieList.clear();
+                movieListAdapter.setMovieList(movieList);
+                movieListAdapter.notifyDataSetChanged();
+            }
+        });
+
+        sortBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Collections.reverse(movieList);
+                movieListAdapter.setMovieList(movieList);
+                movieListAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+        retrieveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+    }
+
+    public void initUi() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        movieRv.setLayoutManager(layoutManager);
+
+        movieListAdapter = new MovieListAdapter(this);
+        movieRv.setAdapter(movieListAdapter);
     }
 
     public void setMovieListAdapter(@NonNull List<Movie> movies) {
