@@ -28,7 +28,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MovieListFragment extends Fragment implements MovieListAdapter.OnItemClicked {
 
-    private MovieListViewModel mViewModel;
+    private MovieViewModel mViewModel;
 
     private RecyclerView movieRv;
     private Button nextBtn;
@@ -77,7 +77,7 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
         movieRv = getActivity().findViewById(R.id.movieListRv);
         nextBtn = getActivity().findViewById(R.id.nextBtn);
 
-        mViewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         // TODO: Use the ViewModel
         mViewModel.getMovieListLiveData().observe(this, new Observer<List<Movie>>() {
             @Override

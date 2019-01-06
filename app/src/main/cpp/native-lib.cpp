@@ -2,9 +2,9 @@
 #include <string>
 extern "C"
 JNIEXPORT jlongArray JNICALL
-Java_com_example_manojsoni_logitechinterview_FibNumDataSource_getFibNum(JNIEnv *env,
-                                                                        jobject instance,
-                                                                        jint n) {
+Java_com_example_manojsoni_logitechinterview_fibNum_FibNumDataSource_getFibNum(JNIEnv *env,
+                                                                               jclass type,
+                                                                               jint n) {
 
     jlongArray fiboarray  = env->NewLongArray(n);
 

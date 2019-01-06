@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         subsribeToViewModel();
 
         nextBtn.setOnClickListener(view -> {
-            Intent myIntent = new Intent(MainActivity.this, MovieListActivity.class);
+            Intent myIntent = new Intent(MainActivity.this, MovieActivity.class);
             startActivity(myIntent);
         });
     }

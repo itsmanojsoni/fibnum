@@ -7,9 +7,9 @@ import android.util.Log;
 import com.example.manojsoni.logitechinterview.movie.database.MovieDatabase;
 import com.example.manojsoni.logitechinterview.movie.movielist.MovieListFragment;
 
-public class MovieListActivity extends AppCompatActivity implements MovieListFragment.OnNextClicked {
+public class MovieActivity extends AppCompatActivity implements MovieListFragment.OnNextClicked {
 
-    private static final String TAG = MovieListActivity.class.getSimpleName();
+    private static final String TAG = MovieActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

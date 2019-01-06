@@ -13,10 +13,10 @@ import java.util.List;
 import rx.Observer;
 import rx.schedulers.Schedulers;
 
-public class MovieListViewModel extends ViewModel {
+public class MovieViewModel extends ViewModel {
 
 
-    private static final String TAG = MovieListViewModel.class.getSimpleName();
+    private static final String TAG = MovieViewModel.class.getSimpleName();
 
     private MutableLiveData<List<Movie>> movieListLiveData = new MutableLiveData<>();
 
