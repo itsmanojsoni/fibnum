@@ -14,6 +14,7 @@ import com.example.manojsoni.logitechinterview.model.Movie;
 import com.example.manojsoni.logitechinterview.movie.database.MovieDatabaseFragment;
 import com.example.manojsoni.logitechinterview.movie.movielist.MovieListFragment;
 
+import java.util.Collections;
 import java.util.List;
 
 public class MovieActivity extends AppCompatActivity implements
@@ -44,10 +45,11 @@ public class MovieActivity extends AppCompatActivity implements
         viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         // TODO: Use the ViewModel
         viewModel.getMovieListLiveData().observe(this, new Observer<List<Movie>>() {
-
             @Override
             public void onChanged(@Nullable List<Movie> movies) {
-                movieListFragment.setMovieListAdapter(movies);
+                if (movies != null && movies.size() > 0) {
+                    movieListFragment.setMovieListFragment(movies);
+                }
             }
         });
 

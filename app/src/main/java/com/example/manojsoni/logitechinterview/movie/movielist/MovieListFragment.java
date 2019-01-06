@@ -36,10 +36,17 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
     private List<Movie> movieList = new ArrayList<>();
     private OnActivityCallback callback;
 
+    private static final int NUMBER_PER_PAGE = 3;
+
+    private int startIndex = 0;
+    private int endIndex = 0;
+
+
     private static final String TAG = MovieListFragment.class.getSimpleName();
 
     public interface OnActivityCallback {
         void onNextClicked();
+
         void insertOrUpdateMovie(Movie movie);
     }
 
@@ -77,7 +84,7 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
         nextBtn = getActivity().findViewById(R.id.nextBtn);
         Button deleteAllBtn = getActivity().findViewById(R.id.DeleteMovieListAllBtn);
         Button sortBtn = getActivity().findViewById(R.id.sortBtn);
-        Button retrieveBtn  = getActivity().findViewById(R.id.retrieveBtn);
+        Button retrieveBtn = getActivity().findViewById(R.id.retrieveBtn);
 
         initUi();
 
@@ -93,17 +100,19 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
             @Override
             public void onClick(View view) {
                 movieList.clear();
-                movieListAdapter.setMovieList(movieList);
-                movieListAdapter.notifyDataSetChanged();
+                startIndex = 0;
+                endIndex = 0;
+                updateAdapterList();
             }
         });
 
         sortBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Collections.reverse(movieList);
-                movieListAdapter.setMovieList(movieList);
-                movieListAdapter.notifyDataSetChanged();
+                if (movieList != null && movieList.size() > 0) {
+                    Collections.reverse(movieList);
+                    updateAdapterList();
+                }
             }
         });
 
@@ -111,10 +120,13 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
         retrieveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (movieList != null && movieList.size() > 0) {
+                    startIndex = endIndex;
+                    endIndex = startIndex + NUMBER_PER_PAGE;
+                    updateAdapterList();
+                }
             }
         });
-
     }
 
     public void initUi() {
@@ -126,11 +138,19 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
         movieRv.setAdapter(movieListAdapter);
     }
 
-    public void setMovieListAdapter(@NonNull List<Movie> movies) {
+    public void setMovieListFragment(@NonNull List<Movie> movies) {
         movieList.clear();
         movieList.addAll(movies);
-        movieListAdapter.setMovieList(movieList);
+        startIndex = 0;
+        endIndex = NUMBER_PER_PAGE;
+        updateAdapterList();
 
+    }
+
+    private void updateAdapterList() {
+        if (movieListAdapter != null) {
+            movieListAdapter.setMovieList(movieList.subList(startIndex, endIndex));
+        }
     }
 
     @Override
