@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.manojsoni.logitechinterview.R;
 import com.example.manojsoni.logitechinterview.database.LocalMovieDataSource;
@@ -75,19 +76,29 @@ public class MovieActivity extends AppCompatActivity implements
 
     @Override
     public void insertOrUpdateMovie(Movie movie) {
-        viewModel.insertOrUpdateMovie(movie);
+        if (viewModel != null) {
+            Toast.makeText(this, "Insert Movie to database",
+                    Toast.LENGTH_SHORT).show();
+            viewModel.insertOrUpdateMovie(movie);
+        }
     }
 
 
     @Override
     public void deleteMovie(Movie movie) {
-
-        viewModel.deleteMovie(movie);
+        if (viewModel != null) {
+            Toast.makeText(this, "Delete  Movie",
+                    Toast.LENGTH_SHORT).show();
+            viewModel.deleteMovie(movie);
+        }
     }
 
     @Override
     public void deleteAllMovies() {
-        viewModel.deleteAllMovies();
-
+        if (viewModel != null) {
+            Toast.makeText(this, "Delete All Movies",
+                    Toast.LENGTH_SHORT).show();
+            viewModel.deleteAllMovies();
+        }
     }
 }

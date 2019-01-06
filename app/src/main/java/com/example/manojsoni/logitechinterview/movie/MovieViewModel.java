@@ -128,7 +128,6 @@ public class MovieViewModel extends ViewModel {
 
     public void deleteAllMovies() {
         if (localMovieDataSource != null) {
-
             Observable.fromCallable(() -> {
                 localMovieDataSource.deleteAllMovies();
                 return 0;

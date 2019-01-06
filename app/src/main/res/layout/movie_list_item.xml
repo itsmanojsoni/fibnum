@@ -30,6 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/smallMargin"
             android:textSize="@dimen/textSize"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/movieIv"
             app:layout_constraintTop_toTopOf="parent" />
