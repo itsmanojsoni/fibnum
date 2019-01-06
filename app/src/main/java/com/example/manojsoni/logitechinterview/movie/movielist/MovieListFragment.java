@@ -18,6 +18,7 @@ import android.widget.Button;
 import com.example.manojsoni.logitechinterview.R;
 import com.example.manojsoni.logitechinterview.database.LocalMovieDataSource;
 import com.example.manojsoni.logitechinterview.model.Movie;
+import com.example.manojsoni.logitechinterview.movie.MovieViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

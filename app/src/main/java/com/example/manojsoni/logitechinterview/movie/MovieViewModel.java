@@ -1,4 +1,4 @@
-package com.example.manojsoni.logitechinterview.movie.movielist;
+package com.example.manojsoni.logitechinterview.movie;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
