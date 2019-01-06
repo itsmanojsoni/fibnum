@@ -1,7 +1,6 @@
 package com.example.manojsoni.logitechinterview.ui.movielist;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.manojsoni.logitechinterview.FibNumAdapter;
 import com.example.manojsoni.logitechinterview.R;
 import com.example.manojsoni.logitechinterview.model.Movie;
 
@@ -22,13 +20,23 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     private List<Movie>  movieList = new ArrayList<>();
     private static final String TAG = MovieListAdapter.class.getSimpleName();
 
+    private OnItemClicked listener;
+
+    interface OnItemClicked {
+        void onItemClicked(int position);
+    }
+
+    public MovieListAdapter(OnItemClicked eventListener) {
+        listener = eventListener;
+    }
+
     @Override
     public MovieListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.movie_list_item, parent, false);
 
-        MovieListAdapter.ViewHolder viewHolder = new MovieListAdapter.ViewHolder(view);
+        MovieListAdapter.ViewHolder viewHolder = new MovieListAdapter.ViewHolder(view, listener);
 
         return viewHolder;
     }
@@ -51,17 +59,23 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView movieIv;
-        TextView movieTitleTv;
 
-        public ViewHolder(View itemView) {
+        private  ImageView movieIv;
+        private TextView movieTitleTv;
+
+        private OnItemClicked eventlistner;
+
+
+        public ViewHolder(View itemView, OnItemClicked eventListener) {
             super(itemView);
+            this.eventlistner = eventListener;
             movieIv = itemView.findViewById(R.id.movieIv);
             movieTitleTv = itemView.findViewById(R.id.movieTitleTv);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d(TAG, "Item Clicked");
+                    eventlistner.onItemClicked(getAdapterPosition());
                 }
             });
         }

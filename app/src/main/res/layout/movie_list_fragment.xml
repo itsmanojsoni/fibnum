@@ -20,7 +20,7 @@
         android:id="@+id/DeleteAllBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        
+
         app:layout_constraintStart_toStartOf="@id/retrieveBtn"
         app:layout_constraintEnd_toEndOf="@id/retrieveBtn"
         app:layout_constraintBottom_toTopOf="@id/retrieveBtn"/>
