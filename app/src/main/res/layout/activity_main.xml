@@ -42,8 +42,8 @@
                 android:layout_marginStart="@dimen/largeMargin"
                 android:layout_marginEnd="@dimen/largeMargin"
                 android:onClick="onRadioButtonClicked"
-                android:text="@string/java"
                 android:checked="true"
+                android:text="@string/java"
                 android:textSize="@dimen/textSize" />
 
             <RadioButton

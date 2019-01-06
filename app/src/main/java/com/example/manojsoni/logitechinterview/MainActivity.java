@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.manojsoni.logitechinterview.fibNum.FibNumAdapter;
 import com.example.manojsoni.logitechinterview.fibNum.FibNumViewModel;
@@ -26,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView fibNumRv;
 
     private Button nextBtn;
-
-
 
     private FibNumAdapter fibNumAdapter;
 
@@ -85,6 +84,11 @@ public class MainActivity extends AppCompatActivity {
                 updateUi(startIndex , NUMBER_PER_PAGE);
             }
         });
+
+        // First time make JAVA fib default
+        if (fibNumViewModel != null) {
+            fibNumViewModel.getFibNumberList(FibNumViewModel.DATASOURCE.JAVA, MAX_FIB_NUM_INDEX);
+        }
     }
 
     private void updateUi(int start, int end) {
@@ -95,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         boolean checked = ((RadioButton) view).isChecked();
 
-        // Check which radio button was clicked
         switch(view.getId()) {
             case R.id.Java:
                 if (checked)
