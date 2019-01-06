@@ -1,4 +1,4 @@
-package com.example.manojsoni.logitechinterview.ui.movielist;
+package com.example.manojsoni.logitechinterview.movie.movielist;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;

@@ -4,8 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.manojsoni.logitechinterview.ui.database.MovieDatabase;
-import com.example.manojsoni.logitechinterview.ui.movielist.MovieListFragment;
+import com.example.manojsoni.logitechinterview.movie.database.MovieDatabase;
+import com.example.manojsoni.logitechinterview.movie.movielist.MovieListFragment;
 
 public class MovieListActivity extends AppCompatActivity implements MovieListFragment.OnNextClicked {
 

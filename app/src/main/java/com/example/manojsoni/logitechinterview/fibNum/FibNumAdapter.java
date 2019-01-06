@@ -1,11 +1,12 @@
-package com.example.manojsoni.logitechinterview;
+package com.example.manojsoni.logitechinterview.fibNum;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.manojsoni.logitechinterview.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,13 +1,11 @@
-package com.example.manojsoni.logitechinterview;
+package com.example.manojsoni.logitechinterview.fibNum;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -17,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class FibNumViewModel extends ViewModel {
 
-    enum DATASOURCE {
+    public enum DATASOURCE {
         JAVA,
         JNI
     }
@@ -38,10 +36,10 @@ public class FibNumViewModel extends ViewModel {
 
         if (datasource == DATASOURCE.JAVA) {
             Log.d(TAG, "get Fib Number From JAVA");
-            observable  = FibNumDataSource.getFibNumFromJava(number);
+            observable = FibNumDataSource.getFibNumFromJava(number);
         } else if (datasource == DATASOURCE.JNI) {
             Log.d(TAG, "get Fib Number From JNI");
-            observable  = FibNumDataSource.getFibNumerFromJNI(number);
+            observable = FibNumDataSource.getFibNumerFromJNI(number);
         }
 
         observable.subscribeOn(Schedulers.io())
@@ -54,7 +52,7 @@ public class FibNumViewModel extends ViewModel {
 
                     @Override
                     public void onNext(List<String> numbers) {
-                        Log.d(TAG, "got the number and it is = "+numbers.size());
+                        Log.d(TAG, "got the number and it is = " + numbers.size());
                         fibNumList.postValue(numbers);
                     }
 

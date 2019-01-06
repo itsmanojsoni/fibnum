@@ -1,4 +1,4 @@
-package com.example.manojsoni.logitechinterview.ui.database;
+package com.example.manojsoni.logitechinterview.movie.database;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
