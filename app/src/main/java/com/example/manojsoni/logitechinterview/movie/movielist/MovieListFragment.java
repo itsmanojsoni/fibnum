@@ -110,12 +110,13 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
             @Override
             public void onClick(View view) {
                 if (movieList != null && movieList.size() > 0) {
+                    startIndex = 0;
+                    endIndex = NUMBER_PER_PAGE;
                     Collections.reverse(movieList);
                     updateAdapterList();
                 }
             }
         });
-
 
         retrieveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +150,10 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
 
     private void updateAdapterList() {
         if (movieListAdapter != null) {
+            if (endIndex > movieList.size()) {
+                endIndex = movieList.size();
+            }
+            
             movieListAdapter.setMovieList(movieList.subList(startIndex, endIndex));
         }
     }
