@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void subsribeToViewModel() {
-        FibNumViewModel fibNumViewModel = ViewModelProviders.of(this).get(FibNumViewModel.class);
+        fibNumViewModel = ViewModelProviders.of(this).get(FibNumViewModel.class);
 
         fibNumViewModel.getFibNumberList().observe(this, new android.arch.lifecycle.Observer<List<String>>() {
             @Override

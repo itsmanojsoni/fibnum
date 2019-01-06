@@ -53,6 +53,7 @@ public class FibNumViewModel extends ViewModel {
 
                     @Override
                     public void onNext(List<String> numbers) {
+                        Log.d(TAG, "got the number and it is = "+numbers.size());
                         fibNumList.postValue(numbers);
                     }
 
