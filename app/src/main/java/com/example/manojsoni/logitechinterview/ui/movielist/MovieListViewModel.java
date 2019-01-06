@@ -1,5 +1,7 @@
 package com.example.manojsoni.logitechinterview.ui.movielist;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
@@ -15,7 +17,12 @@ public class MovieListViewModel extends ViewModel {
 
 
     private static final String TAG = MovieListViewModel.class.getSimpleName();
-    // TODO: Implement the ViewModel
+
+    private MutableLiveData<List<Movie>> movieListLiveData = new MutableLiveData<>();
+
+    public LiveData<List<Movie>> getMovieListLiveData() {
+        return movieListLiveData;
+    }
 
 
     public void loadMovieList() {
@@ -32,15 +39,16 @@ public class MovieListViewModel extends ViewModel {
                     @Override
                     public void onError(Throwable e) {
 
-                        Log.e(TAG, "Error = "+e.getMessage());
+                        Log.e(TAG, "Error = " + e.getMessage());
                     }
 
                     @Override
                     public void onNext(List<Movie> movies) {
 
                         for (Movie movie : movies) {
-                            Log.d(TAG, "Movie name is = "+movie.title);
+                            Log.d(TAG, "Movie name is = " + movie.title);
                         }
+                        movieListLiveData.postValue(movies);
                     }
                 });
     }

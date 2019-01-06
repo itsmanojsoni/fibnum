@@ -7,15 +7,55 @@
     android:layout_height="match_parent"
     tools:context=".ui.movielist.MovieListFragment">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/movieListRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/extraLargeMargin"
+        app:layout_constraintBottom_toTopOf="@+id/DeleteAllBtn">
+    </android.support.v7.widget.RecyclerView>
 
-    <TextView
-        android:id="@+id/message"
+
+    <Button
+        android:id="@+id/DeleteAllBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MovieListFragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        
+        app:layout_constraintStart_toStartOf="@id/retrieveBtn"
+        app:layout_constraintEnd_toEndOf="@id/retrieveBtn"
+        app:layout_constraintBottom_toTopOf="@id/retrieveBtn"/>
+
+
+    <Button
+        android:id="@+id/sortBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/largeMargin"
+        android:layout_marginBottom="@dimen/largeMargin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/retrieveBtn"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/retrieveBtn"
+        android:text="@string/retrieve_btn_name"
+        android:textSize="@dimen/textSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/largeMargin"
+        app:layout_constraintStart_toEndOf="@id/sortBtn"
+        app:layout_constraintEnd_toStartOf="@id/nextBtn"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/nextBtn"
+        android:text="@string/next_btn_name"
+        android:textSize="@dimen/textSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/largeMargin"
+        app:layout_constraintStart_toEndOf="@id/retrieveBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
