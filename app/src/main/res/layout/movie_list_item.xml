@@ -1,26 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/movieItemContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/largeMargin"
     android:layout_marginBottom="@dimen/largeMargin"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:fitsSystemWindows="true">
 
-    <ImageView
-        android:id="@+id/movieIv"
-        android:layout_marginTop="@dimen/smallMargin"
-        android:layout_width="@dimen/imageHeight"
-        android:layout_height="@dimen/imageHeight" />
-
-    <TextView
-        android:id="@+id/movieTitleTv"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/textSize"
         android:layout_marginStart="@dimen/smallMargin"
-        app:layout_constraintStart_toEndOf="@id/movieIv"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_marginTop="@dimen/smallMargin"
+        android:layout_marginEnd="@dimen/smallMargin"
+        android:layout_marginBottom="@dimen/smallMargin"
+        card_view:cardCornerRadius="@dimen/cardRadius">
+
+        <ImageView
+            android:id="@+id/movieIv"
+            android:layout_width="@dimen/imageSize"
+            android:layout_height="@dimen/imageSize" />
+
+        <TextView
+            android:id="@+id/movieTitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/smallMargin"
+            android:textSize="@dimen/textSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/movieIv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

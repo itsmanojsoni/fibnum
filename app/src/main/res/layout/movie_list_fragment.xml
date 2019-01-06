@@ -21,16 +21,16 @@
         android:id="@+id/DeleteAllBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:text="@string/delete_all_btn_name"
         app:layout_constraintStart_toStartOf="@id/retrieveBtn"
         app:layout_constraintEnd_toEndOf="@id/retrieveBtn"
         app:layout_constraintBottom_toTopOf="@id/retrieveBtn"/>
-
 
     <Button
         android:id="@+id/sortBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/sort_btn_name"
         android:layout_marginStart="@dimen/largeMargin"
         android:layout_marginBottom="@dimen/largeMargin"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,6 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/largeMargin"
+        android:layout_marginBottom="@dimen/largeMargin"
         app:layout_constraintStart_toEndOf="@id/sortBtn"
         app:layout_constraintEnd_toStartOf="@id/nextBtn"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -54,6 +55,7 @@
         android:textSize="@dimen/textSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/largeMargin"
         android:layout_marginStart="@dimen/largeMargin"
         app:layout_constraintStart_toEndOf="@id/retrieveBtn"
         app:layout_constraintEnd_toEndOf="parent"

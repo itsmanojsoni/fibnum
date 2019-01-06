@@ -4,6 +4,8 @@
     <dimen name="RadioBtnStartMargin">16dp</dimen>
     <dimen name="RadioBtnEndMargin">16dp</dimen>
 
+    <dimen name="cardRadius">4dp</dimen>
+
     <dimen name="smallMargin">8dp</dimen>
 
     <dimen name="largeMargin">16dp</dimen>

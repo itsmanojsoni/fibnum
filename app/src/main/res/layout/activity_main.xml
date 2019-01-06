@@ -23,14 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fibNumListRv">
+        app:layout_constraintStart_toStartOf="parent">
 
         <RadioGroup
             android:id="@+id/radioBtnContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginBottom="@dimen/extraextraLargeMargin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -43,6 +43,7 @@
                 android:layout_marginEnd="@dimen/largeMargin"
                 android:onClick="onRadioButtonClicked"
                 android:text="@string/java"
+                android:checked="true"
                 android:textSize="@dimen/textSize" />
 
             <RadioButton
@@ -65,13 +66,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/largeMargin"
             android:layout_marginEnd="@dimen/smallMargin"
+            android:layout_marginTop="@dimen/largeMargin"
+            android:layout_marginBottom="@dimen/smallMargin"
             android:paddingStart="@dimen/largeMargin"
             android:paddingEnd="@dimen/largeMargin"
             android:gravity="center"
             android:text="@string/clear_btn_name"
             android:textSize="@dimen/textSize"
             app:layout_constraintEnd_toStartOf="@id/resetBtn"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/retrieveBtn" />
 
         <Button
             android:id="@+id/resetBtn"
@@ -79,10 +82,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/smallMargin"
             android:layout_marginEnd="@dimen/largeMargin"
+            android:layout_marginTop="@dimen/largeMargin"
+            android:layout_marginBottom="@dimen/smallMargin"
             android:text="@string/reset_btn_name"
             android:textSize="@dimen/textSize"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/nextBtn" />
 
         <Button
             android:id="@+id/retrieveBtn"
@@ -90,9 +95,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/largeMargin"
             android:layout_marginEnd="@dimen/largeMargin"
+            android:layout_marginBottom="@dimen/extraLargeMargin"
             android:text="@string/retrieve_btn_name"
             android:textSize="@dimen/textSize"
-            app:layout_constraintTop_toBottomOf="@id/clearBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/clearBtn"
             app:layout_constraintEnd_toEndOf="@id/clearBtn"/>
 
@@ -102,10 +108,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/largeMargin"
             android:layout_marginEnd="@dimen/largeMargin"
+            android:layout_marginBottom="@dimen/extraLargeMargin"
             android:text="@string/next_btn_name"
             android:textSize="@dimen/textSize"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/resetBtn" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
