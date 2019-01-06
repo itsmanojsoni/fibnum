@@ -42,6 +42,11 @@ public class LocalMovieDataSource implements MovieDataSource {
     }
 
     @Override
+    public void deleteMovie(Movie movie) {
+        movieDao.deleteMovie(movie);
+    }
+
+    @Override
     public List<Movie> getAllMovies() {
         return movieDao.getMovies();
     }

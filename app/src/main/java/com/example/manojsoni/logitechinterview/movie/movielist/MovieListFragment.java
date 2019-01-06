@@ -1,7 +1,5 @@
 package com.example.manojsoni.logitechinterview.movie.movielist;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -35,14 +33,13 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
     private Button nextBtn;
     private MovieListAdapter movieListAdapter;
     private List<Movie> movieList = new ArrayList<>();
-    private LocalMovieDataSource localMovieDataSource;
-
-    private OnNextClicked onNextClicked;
+    private OnActivityCallback callback;
 
     private static final String TAG = MovieListFragment.class.getSimpleName();
 
-    public interface OnNextClicked {
+    public interface OnActivityCallback {
         void onNextClicked();
+        void insertOrUpdateMovie(Movie movie);
     }
 
 
@@ -55,11 +52,11 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
         super.onAttach(context);
 
         try {
-            onNextClicked = (OnNextClicked) context;
+            callback = (OnActivityCallback) context;
         } catch (ClassCastException e) {
 
             throw new ClassCastException(getActivity().toString()
-                    + " must implement OnNextClicked");
+                    + " must implement OnMovieUpdateCallback");
         }
     }
 
@@ -78,18 +75,6 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
         movieRv = getActivity().findViewById(R.id.movieListRv);
         nextBtn = getActivity().findViewById(R.id.nextBtn);
 
-//        mViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-//        // TODO: Use the ViewModel
-//        mViewModel.getMovieListLiveData().observe(this, new Observer<List<Movie>>() {
-//            @Override
-//            public void onChanged(@Nullable List<Movie> movies) {
-//
-//                movieList.clear();
-//                movieList.addAll(movies);
-//                movieListAdapter.setMovieList(movieList);
-//            }
-//        });
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         movieRv.setLayoutManager(layoutManager);
@@ -97,19 +82,16 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
         movieListAdapter = new MovieListAdapter(this);
         movieRv.setAdapter(movieListAdapter);
 
-//        mViewModel.loadMovieList();
-
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "next button clicked");
-                onNextClicked.onNextClicked();
+                callback.onNextClicked();
             }
         });
     }
 
-    public void setMovieListAdapter(List<Movie> movies) {
-
+    public void setMovieListAdapter(@NonNull List<Movie> movies) {
         movieList.clear();
         movieList.addAll(movies);
         movieListAdapter.setMovieList(movieList);
@@ -119,19 +101,12 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        localMovieDataSource = LocalMovieDataSource.getInstance(getContext());
     }
 
     @Override
     public void onItemClicked(int position) {
-        Observable.fromCallable(new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                localMovieDataSource.insertOrUpdateMovie(movieList.get(position));
-                return 0;
-            }
-        }).subscribeOn(Schedulers.io())
-                .subscribe();
-
+        if (callback != null) {
+            callback.insertOrUpdateMovie(movieList.get(position));
+        }
     }
 }

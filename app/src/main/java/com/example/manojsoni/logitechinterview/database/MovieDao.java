@@ -1,6 +1,7 @@
 package com.example.manojsoni.logitechinterview.database;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
@@ -22,5 +23,7 @@ public interface MovieDao {
     @Query("DELETE FROM movies")
     void deleteAllMovies();
 
+    @Delete
+    void deleteMovie(Movie movie);
 
 }

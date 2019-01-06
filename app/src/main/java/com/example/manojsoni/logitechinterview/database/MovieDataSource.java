@@ -11,5 +11,7 @@ public interface MovieDataSource {
 
     void deleteAllMovies();
 
+    void deleteMovie(Movie movie);
+
     List<Movie> getAllMovies();
 }

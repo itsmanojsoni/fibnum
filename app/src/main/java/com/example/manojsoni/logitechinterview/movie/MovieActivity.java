@@ -15,12 +15,15 @@ import com.example.manojsoni.logitechinterview.movie.movielist.MovieListFragment
 
 import java.util.List;
 
-public class MovieActivity extends AppCompatActivity implements MovieListFragment.OnNextClicked {
+public class MovieActivity extends AppCompatActivity implements
+        MovieListFragment.OnActivityCallback, MovieDatabaseFragment.OnMovieUpdateCallback {
 
     private static final String TAG = MovieActivity.class.getSimpleName();
 
     private MovieListFragment movieListFragment;
+    private MovieDatabaseFragment movieDatabaseFragment;
     private MovieViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +50,44 @@ public class MovieActivity extends AppCompatActivity implements MovieListFragmen
             }
         });
 
+        viewModel.getMovieListDatabaseLiveData().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(@Nullable List<Movie> movies) {
+                movieDatabaseFragment.setMovieList(movies);
+            }
+        });
+
+        viewModel.setLocalMovieDataSource(LocalMovieDataSource.getInstance(this));
         viewModel.loadMovieList();
     }
 
     @Override
     public void onNextClicked() {
         Log.d(TAG, "on Next Clicked. now display movies in database");
-        MovieDatabaseFragment movieDatabaseFragment =    MovieDatabaseFragment.newInstance();
-
+        movieDatabaseFragment =    MovieDatabaseFragment.newInstance();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, movieDatabaseFragment)
                 .commitNow();
 
         viewModel.loadMoviesDatabase(LocalMovieDataSource.getInstance(this));
+
+    }
+
+    @Override
+    public void insertOrUpdateMovie(Movie movie) {
+        viewModel.insertOrUpdateMovie(movie);
+    }
+
+
+    @Override
+    public void deleteMovie(Movie movie) {
+
+        viewModel.deleteMovie(movie);
+    }
+
+    @Override
+    public void deleteAllMovies() {
+        viewModel.deleteAllMovies();
 
     }
 }

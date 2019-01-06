@@ -14,6 +14,7 @@ import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.operators.observable.ObservableFromCallable;
 import rx.Observer;
 import rx.schedulers.Schedulers;
 
@@ -23,17 +24,32 @@ public class MovieViewModel extends ViewModel {
 
     private MutableLiveData<List<Movie>> movieListLiveData = new MutableLiveData<>();
 
+
+    private MutableLiveData<List<Movie>> movieListDatabaseLiveData = new MutableLiveData<>();
+
+
+
     public LiveData<List<Movie>> getMovieListLiveData() {
         return movieListLiveData;
     }
 
+    public LiveData<List<Movie>> getMovieListDatabaseLiveData() {
+        return movieListDatabaseLiveData;
+    }
+
+    LocalMovieDataSource localMovieDataSource;
+
+    public void setLocalMovieDataSource(LocalMovieDataSource localMovieDataSource) {
+        this.localMovieDataSource = localMovieDataSource;
+    }
+
 
     public void loadMovieList() {
-
         MovieRepository.getInstance().getMovieList().subscribeOn(Schedulers.io())
                 .subscribe(new Observer<List<Movie>>() {
                     @Override
-                    public void onCompleted() { }
+                    public void onCompleted() {
+                    }
 
                     @Override
                     public void onError(Throwable e) {
@@ -71,8 +87,8 @@ public class MovieViewModel extends ViewModel {
 
                         for (int i = 0; i < movies.size(); i++) {
                             Log.d(TAG, "Movie Title here is  = " + movies.get(i).getTitle());
-
                         }
+                        movieListDatabaseLiveData.postValue(movies);
                     }
 
                     @Override
@@ -85,6 +101,40 @@ public class MovieViewModel extends ViewModel {
 
                     }
                 });
+    }
+
+    public void insertOrUpdateMovie(Movie movie) {
+        if (localMovieDataSource != null) {
+            Observable.fromCallable(new Callable<Integer>() {
+                @Override
+                public Integer call() throws Exception {
+                    localMovieDataSource.insertOrUpdateMovie(movie);
+                    return 0;
+                }
+            }).subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                    .subscribe();
+        }
+    }
+
+    public void deleteMovie(Movie movie) {
+        if (localMovieDataSource != null) {
+            Observable.fromCallable(() -> {
+                localMovieDataSource.deleteMovie(movie);
+                return 0;
+            }).subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                    .subscribe();
+        }
+    }
+
+    public void deleteAllMovies() {
+        if (localMovieDataSource != null) {
+
+            Observable.fromCallable(() -> {
+                localMovieDataSource.deleteAllMovies();
+                return 0;
+            }).subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                    .subscribe();
+        }
     }
 }
 
