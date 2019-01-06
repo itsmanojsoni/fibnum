@@ -68,13 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
         subsribeToViewModel();
 
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent myIntent = new Intent(MainActivity.this, MovieListActivity.class);
-                startActivity(myIntent);
-            }
+        nextBtn.setOnClickListener(view -> {
+            Intent myIntent = new Intent(MainActivity.this, MovieListActivity.class);
+            startActivity(myIntent);
         });
     }
 

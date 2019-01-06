@@ -31,11 +31,15 @@ public class MovieListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
         // TODO: Use the ViewModel
+
+        mViewModel.loadMovieList();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
 
     }
