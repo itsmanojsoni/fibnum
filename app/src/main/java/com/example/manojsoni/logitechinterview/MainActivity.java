@@ -1,5 +1,7 @@
 package com.example.manojsoni.logitechinterview;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,16 +32,23 @@ public class MainActivity extends AppCompatActivity {
 
     private FibNumAdapter fibNumAdapter;
 
+    private static final int MAX_FIB_NUM_INDEX = 50;
+
+    private FibNumViewModel fibNumViewModel;
+
+    private List<String> fibNumberList = new ArrayList<>();
+
+    private static final int NUMBER_PER_PAGE = 10;
+
+    private int startIndex = 0;
+
     // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("native-lib");
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         fibNumRv = findViewById(R.id.fibNumListRv);
 
@@ -49,69 +58,63 @@ public class MainActivity extends AppCompatActivity {
         fibNumRv.setLayoutManager(layoutManager);
         fibNumAdapter = new FibNumAdapter();
         fibNumRv.setAdapter(fibNumAdapter);
+
+        subsribeToViewModel();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Observable<List<String>> fibObservable =  callThisMethod();
-
-        fibObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<String> strings) {
-
-                        for (String s : strings) {
-                            Log.d(TAG, "Fib Number is "+s);
-                        }
-
-                        fibNumAdapter.setData(strings);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+//        Observable<List<String>> fibObservable =  callThisMethod();
+//
+//        fibObservable.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<List<String>>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<String> strings) {
+//
+//                        for (String s : strings) {
+//                            Log.d(TAG, "Fib Number is "+s);
+//                        }
+//
+//                        fibNumAdapter.setData(strings);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
     }
 
-    private Observable<List<String>>  callThisMethod() {
+    private void subsribeToViewModel() {
+        FibNumViewModel fibNumViewModel = ViewModelProviders.of(this).get(FibNumViewModel.class);
 
-        return Observable.fromCallable(new Callable<List<String>>() {
-
+        fibNumViewModel.getFibNumberList().observe(this, new android.arch.lifecycle.Observer<List<String>>() {
             @Override
-            public List<String> call() throws Exception {
-
-                long[] output = getFibNum(10);
-
-                List<String> result = new ArrayList<>();
-                for (int i = 0; i < output.length; i++) {
-                    result.add(String.valueOf(output[i]));
-                }
-
-                return result;
-
+            public void onChanged(@Nullable List<String> fibNumList) {
+                Log.d(TAG, "Fib Number List changed");
+                fibNumberList.clear();
+                fibNumberList.addAll(fibNumList);
+                startIndex = 0;
+                updateUi(startIndex , NUMBER_PER_PAGE);
             }
         });
     }
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
-    public native long[] getFibNum (int num);
+    private void updateUi(int start, int end) {
+        fibNumAdapter.setData(fibNumberList.subList(start, end));
+    }
 
     public void onRadioButtonClicked(View view) {
 
@@ -122,11 +125,18 @@ public class MainActivity extends AppCompatActivity {
             case R.id.Java:
                 if (checked)
                     // Pirates are the best
+                    if (fibNumViewModel != null) {
+                        fibNumViewModel.getFibNumberList(FibNumViewModel.DATASOURCE.JNI, MAX_FIB_NUM_INDEX);
+                    }
+
                     break;
             case R.id.JNI:
-                if (checked)
-                    // Ninjas rule
-                    break;
+                if (checked) {
+                    if (fibNumViewModel != null) {
+                        fibNumViewModel.getFibNumberList(FibNumViewModel.DATASOURCE.JNI, MAX_FIB_NUM_INDEX);
+                    }
+                }
+                break;
         }
     }
 }
