@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fibNumberList.clear();
                 startIndex = 0;
                 endIndex = 0;
                 updateUi();
@@ -134,14 +133,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUi() {
-
-        if (startIndex == 0 && endIndex == 0) {
-            fibNumAdapter.setData(fibNumberList);
-        } else {
-
-            if (endIndex < fibNumberList.size()) {
-                fibNumAdapter.setData(fibNumberList.subList(startIndex, endIndex));
-            }
+        if (endIndex < fibNumberList.size()) {
+            fibNumAdapter.setData(startIndex, fibNumberList.subList(startIndex, endIndex));
         }
     }
 
@@ -149,18 +142,22 @@ public class MainActivity extends AppCompatActivity {
 
         boolean checked = ((RadioButton) view).isChecked();
 
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.Java:
                 if (checked)
                     // Pirates are the best
                     if (fibNumViewModel != null) {
+                        startIndex = 0;
+                        endIndex = 0;
                         fibNumViewModel.getFibNumberList(FibNumViewModel.DATASOURCE.JAVA, MAX_FIB_NUM_INDEX);
                     }
 
-                    break;
+                break;
             case R.id.JNI:
                 if (checked) {
                     if (fibNumViewModel != null) {
+                        startIndex = 0;
+                        endIndex = 0;
                         fibNumViewModel.getFibNumberList(FibNumViewModel.DATASOURCE.JNI, MAX_FIB_NUM_INDEX);
                     }
                 }
