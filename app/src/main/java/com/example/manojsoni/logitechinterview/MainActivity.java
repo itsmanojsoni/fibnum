@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 if (checked)
                     // Pirates are the best
                     if (fibNumViewModel != null) {
-                        fibNumViewModel.getFibNumberList(FibNumViewModel.DATASOURCE.JNI, MAX_FIB_NUM_INDEX);
+                        fibNumViewModel.getFibNumberList(FibNumViewModel.DATASOURCE.JAVA, MAX_FIB_NUM_INDEX);
                     }
 
                     break;

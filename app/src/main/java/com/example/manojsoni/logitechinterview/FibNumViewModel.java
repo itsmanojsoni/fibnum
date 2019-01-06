@@ -33,15 +33,16 @@ public class FibNumViewModel extends ViewModel {
 
 
     public void getFibNumberList(DATASOURCE datasource, int number) {
-
-//        if (datasource == DATASOURCE.JAVA) {
-//            observable = getFibNumerFromJAVA(number);
-//        } else {
-//            observable = getFibNumerFromJNI(number);
-//        }
+        Observable<List<String>> observable = null;
 
 
-        Observable<List<String>> observable = FibNumDataSource.getFibNumberList(number);
+        if (datasource == DATASOURCE.JAVA) {
+            Log.d(TAG, "get Fib Number From JAVA");
+            observable  = FibNumDataSource.getFibNumFromJava(number);
+        } else if (datasource == DATASOURCE.JNI) {
+            Log.d(TAG, "get Fib Number From JNI");
+            observable  = FibNumDataSource.getFibNumerFromJNI(number);
+        }
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
