@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView fibNumRv;
 
     private Button nextBtn;
+    private Button clearBtn;
+    private Button resetBtn;
+    private Button retrieveBtn;
 
     private FibNumAdapter fibNumAdapter;
 
@@ -39,9 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int NUMBER_PER_PAGE = 10;
 
     private int startIndex = 0;
-
-    // Used to load the 'native-lib' library on application startup.
-
+    private int endIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,50 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         fibNumRv = findViewById(R.id.fibNumListRv);
+
         nextBtn = findViewById(R.id.nextBtn);
+        clearBtn = findViewById(R.id.clearBtn);
+        resetBtn = findViewById(R.id.resetBtn);
+        retrieveBtn = findViewById(R.id.retrieveBtn);
+
+        initUi();
+
+
+        subsribeToViewModel();
+
+        nextBtn.setOnClickListener(view -> {
+            Intent myIntent = new Intent(MainActivity.this, MovieActivity.class);
+            startActivity(myIntent);
+        });
+
+        clearBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fibNumberList.clear();
+                startIndex = 0;
+                endIndex = 0;
+                updateUi();
+
+            }
+        });
+
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        retrieveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+    }
+
+    private void initUi() {
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -58,12 +102,6 @@ public class MainActivity extends AppCompatActivity {
         fibNumAdapter = new FibNumAdapter();
         fibNumRv.setAdapter(fibNumAdapter);
 
-        subsribeToViewModel();
-
-        nextBtn.setOnClickListener(view -> {
-            Intent myIntent = new Intent(MainActivity.this, MovieActivity.class);
-            startActivity(myIntent);
-        });
     }
 
     @Override
@@ -73,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void subsribeToViewModel() {
         fibNumViewModel = ViewModelProviders.of(this).get(FibNumViewModel.class);
-
         fibNumViewModel.getFibNumberList().observe(this, new android.arch.lifecycle.Observer<List<String>>() {
             @Override
             public void onChanged(@Nullable List<String> fibNumList) {
@@ -81,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
                 fibNumberList.clear();
                 fibNumberList.addAll(fibNumList);
                 startIndex = 0;
-                updateUi(startIndex , NUMBER_PER_PAGE);
+                endIndex = NUMBER_PER_PAGE;
+                updateUi();
             }
         });
 
@@ -91,8 +129,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUi(int start, int end) {
-        fibNumAdapter.setData(fibNumberList.subList(start, end));
+    private void updateUi() {
+
+        if (startIndex == 0 && endIndex == 0) {
+            fibNumAdapter.setData(fibNumberList);
+        } else {
+
+            if (endIndex < fibNumberList.size()) {
+                fibNumAdapter.setData(fibNumberList.subList(startIndex, endIndex));
+            }
+        }
     }
 
     public void onRadioButtonClicked(View view) {
