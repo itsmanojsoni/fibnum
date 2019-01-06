@@ -1,6 +1,5 @@
 package com.example.manojsoni.logitechinterview.movie.database;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,14 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.manojsoni.logitechinterview.R;
-import com.example.manojsoni.logitechinterview.database.LocalMovieDataSource;
 
-public class MovieDatabase extends Fragment {
+public class MovieDatabaseFragment extends Fragment {
 
-    private MovieDatabaseViewModel mViewModel;
-
-    public static MovieDatabase newInstance() {
-        return new MovieDatabase();
+    public static MovieDatabaseFragment newInstance() {
+        return new MovieDatabaseFragment();
     }
 
     @Override
@@ -29,10 +25,6 @@ public class MovieDatabase extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(MovieDatabaseViewModel.class);
-        // TODO: Use the ViewModel
-
-        mViewModel.loadMoviesDatabase(LocalMovieDataSource.getInstance(getContext()));
     }
 
 }

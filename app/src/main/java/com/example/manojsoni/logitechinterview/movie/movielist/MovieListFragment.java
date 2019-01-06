@@ -78,17 +78,17 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
         movieRv = getActivity().findViewById(R.id.movieListRv);
         nextBtn = getActivity().findViewById(R.id.nextBtn);
 
-        mViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-        // TODO: Use the ViewModel
-        mViewModel.getMovieListLiveData().observe(this, new Observer<List<Movie>>() {
-            @Override
-            public void onChanged(@Nullable List<Movie> movies) {
-
-                movieList.clear();
-                movieList.addAll(movies);
-                movieListAdapter.setMovieList(movieList);
-            }
-        });
+//        mViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+//        // TODO: Use the ViewModel
+//        mViewModel.getMovieListLiveData().observe(this, new Observer<List<Movie>>() {
+//            @Override
+//            public void onChanged(@Nullable List<Movie> movies) {
+//
+//                movieList.clear();
+//                movieList.addAll(movies);
+//                movieListAdapter.setMovieList(movieList);
+//            }
+//        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -97,7 +97,7 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
         movieListAdapter = new MovieListAdapter(this);
         movieRv.setAdapter(movieListAdapter);
 
-        mViewModel.loadMovieList();
+//        mViewModel.loadMovieList();
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +106,14 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
                 onNextClicked.onNextClicked();
             }
         });
+    }
+
+    public void setMovieListAdapter(List<Movie> movies) {
+
+        movieList.clear();
+        movieList.addAll(movies);
+        movieListAdapter.setMovieList(movieList);
+
     }
 
     @Override
