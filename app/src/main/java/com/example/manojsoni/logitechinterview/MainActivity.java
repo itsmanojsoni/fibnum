@@ -1,6 +1,7 @@
 package com.example.manojsoni.logitechinterview;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -28,7 +30,11 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    RecyclerView fibNumRv;
+    private RecyclerView fibNumRv;
+
+    private Button nextBtn;
+
+
 
     private FibNumAdapter fibNumAdapter;
 
@@ -51,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         fibNumRv = findViewById(R.id.fibNumListRv);
+        nextBtn = findViewById(R.id.nextBtn);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -60,6 +67,15 @@ public class MainActivity extends AppCompatActivity {
         fibNumRv.setAdapter(fibNumAdapter);
 
         subsribeToViewModel();
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent myIntent = new Intent(MainActivity.this, MovieListActivity.class);
+                startActivity(myIntent);
+            }
+        });
     }
 
     @Override
