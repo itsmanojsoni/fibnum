@@ -86,6 +86,9 @@ public class MovieDatabaseFragment extends Fragment implements MovieDatabaseAdap
             public void onClick(View view) {
                 if (callback != null) {
                     callback.deleteAllMovies();
+                    movieList.clear();
+                    movieDatabaseAdapter.setMovieList(movieList);
+                    movieDatabaseAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -94,8 +97,8 @@ public class MovieDatabaseFragment extends Fragment implements MovieDatabaseAdap
     public void setMovieList (List<Movie> movies) {
         if (movieDatabaseAdapter != null) {
             Log.d(TAG, "Movies Size = "+movies.size());
-            this.movieList = movies;
-            movieDatabaseAdapter.setMovieList(movies);
+            movieList = movies;
+            movieDatabaseAdapter.setMovieList(movieList);
             movieDatabaseAdapter.notifyDataSetChanged();
         }
     }
@@ -104,6 +107,9 @@ public class MovieDatabaseFragment extends Fragment implements MovieDatabaseAdap
     public void onItemClicked(int position) {
         if (callback != null) {
             callback.deleteMovie(movieList.get(position));
+            movieList.remove(position);
+            movieDatabaseAdapter.setMovieList(movieList);
+            movieDatabaseAdapter.notifyDataSetChanged();
         }
     }
 }

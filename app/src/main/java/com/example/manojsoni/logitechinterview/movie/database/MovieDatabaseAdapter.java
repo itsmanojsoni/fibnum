@@ -67,7 +67,6 @@ public class MovieDatabaseAdapter extends RecyclerView.Adapter<MovieDatabaseAdap
                 public void onClick(View view) {
                     // delete the individual movie
                     listener.onItemClicked(getAdapterPosition());
-
                 }
             });
         }
