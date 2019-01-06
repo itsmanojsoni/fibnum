@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/movieItemContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/smallMargin"
     android:layout_marginTop="@dimen/largeMargin"
+    android:layout_marginEnd="@dimen/smallMargin"
     android:layout_marginBottom="@dimen/largeMargin"
-    android:fitsSystemWindows="true">
+    card_view:cardCornerRadius="@dimen/cardRadius">
 
-    <android.support.v7.widget.CardView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/smallMargin"
         android:layout_marginTop="@dimen/smallMargin"
-        android:layout_marginEnd="@dimen/smallMargin"
-        android:layout_marginBottom="@dimen/smallMargin"
-        card_view:cardCornerRadius="@dimen/cardRadius">
+        android:layout_marginBottom="@dimen/smallMargin">
 
         <ImageView
             android:id="@+id/movieIv"
@@ -33,6 +34,7 @@
             app:layout_constraintStart_toEndOf="@id/movieIv"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </android.support.v7.widget.CardView>
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

@@ -5,15 +5,15 @@
     android:id="@+id/movielist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".movie.movielist.MovieListFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/movieListRv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="@dimen/extraLargeMargin"
-        app:layout_constraintBottom_toTopOf="@+id/DeleteAllBtn">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/DeleteAllBtn">
     </android.support.v7.widget.RecyclerView>
 
 
@@ -22,9 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/delete_all_btn_name"
+        android:layout_marginTop="@dimen/largeMargin"
         app:layout_constraintStart_toStartOf="@id/retrieveBtn"
         app:layout_constraintEnd_toEndOf="@id/retrieveBtn"
-        app:layout_constraintBottom_toTopOf="@id/retrieveBtn"/>
+        app:layout_constraintBottom_toTopOf="@id/retrieveBtn" />
 
     <Button
         android:id="@+id/sortBtn"
