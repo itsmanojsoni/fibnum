@@ -19,6 +19,8 @@ public class MovieDatabaseAdapter extends RecyclerView.Adapter<MovieDatabaseAdap
 
     private List<Movie> movieList = new ArrayList<>();
 
+    private static final String TAG = MovieDatabaseAdapter.class.getSimpleName();
+
     private OnItemClicked listener;
 
     interface OnItemClicked {
@@ -40,7 +42,9 @@ public class MovieDatabaseAdapter extends RecyclerView.Adapter<MovieDatabaseAdap
 
     @Override
     public void onBindViewHolder(MovieDatabaseAdapter.ViewHolder holder, int position) {
-        holder.movieTitle.setText(movieList.get(position).title);
+
+        Log.d(TAG, "on Bind View Holder and position is = "+movieList.get(position).getTitle());
+        holder.movieTitle.setText(movieList.get(position).getTitle());
     }
 
     public void setMovieList (List<Movie> movies) {

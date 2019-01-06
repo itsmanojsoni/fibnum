@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDatabaseFragment extends Fragment implements MovieDatabaseAdapter.OnItemClicked {
+
+    private static final String TAG = MovieDatabaseFragment.class.getSimpleName();
 
     public static MovieDatabaseFragment newInstance() {
         return new MovieDatabaseFragment();
@@ -81,14 +84,17 @@ public class MovieDatabaseFragment extends Fragment implements MovieDatabaseAdap
         deleteAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.deleteAllMovies();
+                if (callback != null) {
+                    callback.deleteAllMovies();
+                }
             }
         });
     }
 
     public void setMovieList (List<Movie> movies) {
-        this.movieList = movies;
         if (movieDatabaseAdapter != null) {
+            Log.d(TAG, "Movies Size = "+movies.size());
+            this.movieList = movies;
             movieDatabaseAdapter.setMovieList(movies);
             movieDatabaseAdapter.notifyDataSetChanged();
         }
