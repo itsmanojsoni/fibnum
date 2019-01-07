@@ -5,13 +5,10 @@ import com.example.manojsoni.logitechinterview.model.Movie;
 import java.util.List;
 
 import retrofit2.http.GET;
-import retrofit2.http.Query;
 import rx.Observable;
 
 public interface MovieService {
 
-
     @GET("/fixture/movies.json")
     Observable<List<Movie>> getMovieList();
-
 }

@@ -7,19 +7,16 @@ import android.util.Log;
 
 import com.example.manojsoni.logitechinterview.database.LocalMovieDataSource;
 import com.example.manojsoni.logitechinterview.model.Movie;
-import com.example.manojsoni.logitechinterview.repository.MovieRepository;
+import com.example.manojsoni.logitechinterview.repository.MovieRemoteDataSource;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.internal.operators.observable.ObservableFromCallable;
+//import io.reactivex.Observable;
+//import io.reactivex.disposables.Disposable;
+import rx.Observable;
 import rx.Observer;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MovieViewModel extends ViewModel {
@@ -27,10 +24,9 @@ public class MovieViewModel extends ViewModel {
     private static final String TAG = MovieViewModel.class.getSimpleName();
 
     private MutableLiveData<List<Movie>> movieListLiveData = new MutableLiveData<>();
-
-
     private MutableLiveData<List<Movie>> movieListDatabaseLiveData = new MutableLiveData<>();
 
+    private LocalMovieDataSource localMovieDataSource;
 
     public LiveData<List<Movie>> getMovieListLiveData() {
         return movieListLiveData;
@@ -40,30 +36,17 @@ public class MovieViewModel extends ViewModel {
         return movieListDatabaseLiveData;
     }
 
-    LocalMovieDataSource localMovieDataSource;
-
     public void setLocalMovieDataSource(LocalMovieDataSource localMovieDataSource) {
         this.localMovieDataSource = localMovieDataSource;
     }
 
-
     public void loadMovieList() {
-        MovieRepository.getInstance().getMovieList().map(new Func1<List<Movie>, List<Movie>>() {
-            @Override
-            public List<Movie> call(List<Movie> movies) {
+        MovieRemoteDataSource.getInstance().getMovieList()
+                .map(movies -> {
+                    Collections.sort(movies, (movie1, movie2) -> movie1.getTitle().compareToIgnoreCase(movie2.getTitle()));
 
-
-                Collections.sort(movies, new Comparator<Movie>() {
-                    @Override
-                    public int compare(Movie movie1, Movie movie2) {
-                        return movie1.getTitle().compareToIgnoreCase(movie2.getTitle());
-                    }
-                });
-
-                return movies;
-            }
-        }).
-                subscribeOn(Schedulers.io())
+                    return movies;
+                }).subscribeOn(Schedulers.io())
                 .subscribe(new Observer<List<Movie>>() {
                     @Override
                     public void onCompleted() {
@@ -76,60 +59,44 @@ public class MovieViewModel extends ViewModel {
 
                     @Override
                     public void onNext(List<Movie> movies) {
-
-                        for (Movie movie : movies) {
-                            Log.d(TAG, "Movie name is = " + movie.title);
+                        if (movies != null && movies.size() > 0) {
+                            movieListLiveData.postValue(movies);
                         }
-                        movieListLiveData.postValue(movies);
                     }
                 });
     }
 
 
     public void loadMoviesDatabase(LocalMovieDataSource localMovieDataSource) {
-        Observable.fromCallable(new Callable<List<Movie>>() {
-            @Override
-            public List<Movie> call() throws Exception {
-                return localMovieDataSource.getAllMovies();
-
-            }
-        }).subscribeOn(io.reactivex.schedulers.Schedulers.io())
-                .subscribe(new io.reactivex.Observer<List<Movie>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
+        Observable.fromCallable(() -> localMovieDataSource.getAllMovies()).subscribeOn(Schedulers.io())
+                .subscribe(new Observer<List<Movie>>() {
 
                     @Override
                     public void onNext(List<Movie> movies) {
+                        if (movies != null && movies.size() > 0) {
+                            movieListDatabaseLiveData.postValue(movies);
+                        }
+                    }
 
-//                        for (int i = 0; i < movies.size(); i++) {
-//                            Log.d(TAG, "Movie Title here is  = " + movies.get(i).getTitle());
-//                        }
-                        movieListDatabaseLiveData.postValue(movies);
+                    @Override
+                    public void onCompleted() {
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e(TAG, "Error getting movies from the database : " + e.getMessage());
                     }
 
-                    @Override
-                    public void onComplete() {
-
-                    }
                 });
     }
 
     public void insertOrUpdateMovie(Movie movie) {
         if (localMovieDataSource != null) {
-            Observable.fromCallable(new Callable<Integer>() {
-                @Override
-                public Integer call() throws Exception {
-                    localMovieDataSource.insertOrUpdateMovie(movie);
-                    return 0;
-                }
-            }).subscribeOn(io.reactivex.schedulers.Schedulers.io())
+            Observable.fromCallable(() -> {
+                localMovieDataSource.insertOrUpdateMovie(movie);
+                return 0;
+            }).subscribeOn(Schedulers.io())
                     .subscribe();
         }
     }
@@ -139,7 +106,7 @@ public class MovieViewModel extends ViewModel {
             Observable.fromCallable(() -> {
                 localMovieDataSource.deleteMovie(movie);
                 return 0;
-            }).subscribeOn(io.reactivex.schedulers.Schedulers.io())
+            }).subscribeOn(Schedulers.io())
                     .subscribe();
         }
     }
@@ -149,7 +116,7 @@ public class MovieViewModel extends ViewModel {
             Observable.fromCallable(() -> {
                 localMovieDataSource.deleteAllMovies();
                 return 0;
-            }).subscribeOn(io.reactivex.schedulers.Schedulers.io())
+            }).subscribeOn(Schedulers.io())
                     .subscribe();
         }
     }

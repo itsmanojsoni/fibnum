@@ -8,22 +8,19 @@ import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
-
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
-public class MovieRepository {
+public class MovieRemoteDataSource {
 
-    private static MovieRepository sInstance;
+    private static MovieRemoteDataSource sInstance;
     private MovieService movieService;
 
     private static final String MOVIES_BASE_URL = "http://eng-assets.s3-website-us-west-2.amazonaws.com";
 
-    private MovieRepository() {
-
-
+    private MovieRemoteDataSource() {
         final Gson gson =
                 new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
         final Retrofit retrofit = new Retrofit.Builder().baseUrl(MOVIES_BASE_URL)
@@ -33,10 +30,9 @@ public class MovieRepository {
         movieService = retrofit.create(MovieService.class);
     }
 
-    public static MovieRepository getInstance() {
-
+    public static MovieRemoteDataSource getInstance() {
         if (sInstance == null) {
-            sInstance =  new MovieRepository();
+            sInstance =  new MovieRemoteDataSource();
         }
 
         return sInstance;
