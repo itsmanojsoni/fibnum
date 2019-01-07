@@ -24,16 +24,12 @@ public class FibNumViewModel extends ViewModel {
 
     private MutableLiveData<List<String>> fibNumList = new MutableLiveData<>();
 
-
     public LiveData<List<String>> getFibNumberList() {
         return fibNumList;
     }
 
-
     public void getFibNumberList(DATASOURCE datasource, int number) {
         Observable<List<String>> observable = null;
-
-
         if (datasource == DATASOURCE.JAVA) {
             Log.d(TAG, "get Fib Number From JAVA");
             observable = FibNumDataSource.getFibNumFromJava(number);
@@ -42,31 +38,30 @@ public class FibNumViewModel extends ViewModel {
             observable = FibNumDataSource.getFibNumerFromJNI(number);
         }
 
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        if (observable != null) {
+            observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<List<String>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onNext(List<String> numbers) {
-                        Log.d(TAG, "got the number and it is = " + numbers.size());
-                        fibNumList.postValue(numbers);
-                    }
+                        @Override
+                        public void onNext(List<String> numbers) {
+                            fibNumList.postValue(numbers);
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "Error " + e.getMessage());
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e(TAG, "Error " + e.getMessage());
+                        }
 
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        }
     }
 }
 

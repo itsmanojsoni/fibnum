@@ -9,25 +9,22 @@ import android.widget.TextView;
 
 import com.example.manojsoni.logitechinterview.R;
 import com.example.manojsoni.logitechinterview.model.Movie;
-import com.example.manojsoni.logitechinterview.movie.movielist.MovieListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDatabaseAdapter extends RecyclerView.Adapter<MovieDatabaseAdapter.ViewHolder>{
 
-
-    private List<Movie> movieList = new ArrayList<>();
-
     private static final String TAG = MovieDatabaseAdapter.class.getSimpleName();
 
+    private List<Movie> movieList = new ArrayList<>();
     private OnItemClicked listener;
 
     interface OnItemClicked {
         void onItemClicked(int position);
     }
 
-    public MovieDatabaseAdapter(OnItemClicked eventListener) {
+    MovieDatabaseAdapter(OnItemClicked eventListener) {
         this.listener = eventListener;
     }
     @Override
@@ -35,15 +32,11 @@ public class MovieDatabaseAdapter extends RecyclerView.Adapter<MovieDatabaseAdap
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.movie_database_item, parent, false);
 
-        MovieDatabaseAdapter.ViewHolder viewHolder = new MovieDatabaseAdapter.ViewHolder(view, listener);
-
-        return viewHolder;
+        return new MovieDatabaseAdapter.ViewHolder(view, listener);
     }
 
     @Override
     public void onBindViewHolder(MovieDatabaseAdapter.ViewHolder holder, int position) {
-
-        Log.d(TAG, "on Bind View Holder and position is = "+movieList.get(position).getTitle());
         holder.movieTitle.setText(movieList.get(position).getTitle());
     }
 
@@ -62,12 +55,9 @@ public class MovieDatabaseAdapter extends RecyclerView.Adapter<MovieDatabaseAdap
             super(itemView);
             movieTitle = itemView.findViewById(R.id.movieDatabaseTitle);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // delete the individual movie
-                    listener.onItemClicked(getAdapterPosition());
-                }
+            itemView.setOnClickListener(view -> {
+                // delete the individual movie
+                listener.onItemClicked(getAdapterPosition());
             });
         }
     }

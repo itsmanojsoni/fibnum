@@ -14,41 +14,33 @@ import java.util.List;
 
 public class FibNumAdapter extends RecyclerView.Adapter<FibNumAdapter.ViewHolder> {
 
-    private List<String> fibNumerList = new ArrayList<>();
-    private int startPostion = 0;
-    private static final String TAG = FibNumAdapter.class.getSimpleName();
-
+    private List<String> fibNumberList = new ArrayList<>();
+    private int startPosition = 0;
 
     @Override
     public FibNumAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
         View view = inflater.inflate(R.layout.activity_fibnum_item, parent, false);
-
-        ViewHolder viewHolder = new ViewHolder(view);
-
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     public void setData(int startIndex, List<String> fibNum) {
-        fibNumerList.clear();
-        fibNumerList.addAll(fibNum);
-        startPostion = startIndex;
+        fibNumberList.clear();
+        fibNumberList.addAll(fibNum);
+        startPosition = startIndex;
         notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(FibNumAdapter.ViewHolder holder, int position) {
-        holder.fibNumIndex.setText(String.valueOf(startPostion + position));
-        holder.fibNumVal.setText(String.valueOf(fibNumerList.get(position)));
+        holder.fibNumIndex.setText(String.valueOf(startPosition + position));
+        holder.fibNumVal.setText(String.valueOf(fibNumberList.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return fibNumerList.size();
+        return fibNumberList.size();
     }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView fibNumIndex;

@@ -14,24 +14,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.manojsoni.logitechinterview.R;
-import com.example.manojsoni.logitechinterview.database.LocalMovieDataSource;
 import com.example.manojsoni.logitechinterview.model.Movie;
-import com.example.manojsoni.logitechinterview.movie.MovieViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
-
+/**
+ * Shows list of movies from the network
+ */
 public class MovieListFragment extends Fragment implements MovieListAdapter.OnItemClicked {
 
-    private MovieViewModel mViewModel;
-
-    private RecyclerView movieRv;
-    private Button nextBtn;
     private MovieListAdapter movieListAdapter;
     private List<Movie> movieList = new ArrayList<>();
     private OnActivityCallback callback;
@@ -49,7 +42,6 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
 
         void insertOrUpdateMovie(Movie movie);
     }
-
 
     public static MovieListFragment newInstance() {
         return new MovieListFragment();
@@ -76,62 +68,51 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Button nextBtn = view.findViewById(R.id.nextBtn);
+        Button deleteAllBtn = view.findViewById(R.id.DeleteMovieListAllBtn);
+        Button sortBtn = view.findViewById(R.id.sortBtn);
+        Button retrieveBtn = view.findViewById(R.id.retrieveBtn);
 
+        initUi(view);
 
-        movieRv = getActivity().findViewById(R.id.movieListRv);
-        nextBtn = getActivity().findViewById(R.id.nextBtn);
-        Button deleteAllBtn = getActivity().findViewById(R.id.DeleteMovieListAllBtn);
-        Button sortBtn = getActivity().findViewById(R.id.sortBtn);
-        Button retrieveBtn = getActivity().findViewById(R.id.retrieveBtn);
-
-        initUi();
-
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "next button clicked");
+        nextBtn.setOnClickListener(view1 -> {
+            if (callback != null) {
                 callback.onNextClicked();
             }
         });
 
-        deleteAllBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        deleteAllBtn.setOnClickListener(view12 -> {
+            if (movieListAdapter != null) {
                 startIndex = 0;
                 endIndex = 0;
                 movieListAdapter.setMovieList(new ArrayList<>());
             }
         });
 
-        sortBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (movieList != null && movieList.size() > 0) {
-                    startIndex = 0;
-                    endIndex = NUMBER_PER_PAGE;
-                    Collections.reverse(movieList);
-                    updateAdapterList();
-                }
+        sortBtn.setOnClickListener(view13 -> {
+            if (movieList != null && movieList.size() > 0) {
+                startIndex = 0;
+                endIndex = NUMBER_PER_PAGE;
+                Collections.reverse(movieList);
+                MovieListFragment.this.updateAdapterList();
             }
         });
 
-        retrieveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (movieList != null && movieList.size() > 0) {
-                    if (startIndex +  NUMBER_PER_PAGE < movieList.size()) {
-                        startIndex = endIndex;
-                        endIndex = startIndex + NUMBER_PER_PAGE;
-                        updateAdapterList();
-                    }
+        retrieveBtn.setOnClickListener(view14 -> {
+            if (movieList != null && movieList.size() > 0) {
+                if (startIndex + NUMBER_PER_PAGE < movieList.size()) {
+                    startIndex = endIndex;
+                    endIndex = startIndex + NUMBER_PER_PAGE;
+                    MovieListFragment.this.updateAdapterList();
                 }
             }
         });
     }
 
-    public void initUi() {
+    public void initUi(@NonNull View view) {
+        RecyclerView movieRv = view.findViewById(R.id.movieListRv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         movieRv.setLayoutManager(layoutManager);
@@ -158,13 +139,9 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
     public void onItemClicked(int position) {
         if (callback != null) {
+            Log.d(TAG, "Insert Movie into database");
             callback.insertOrUpdateMovie(movieList.get(position));
         }
     }

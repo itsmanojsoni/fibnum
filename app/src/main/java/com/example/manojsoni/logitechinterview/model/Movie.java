@@ -8,19 +8,16 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "movies")
 public class Movie {
 
-
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "movieid")
     public String id;
-
 
     @ColumnInfo(name = "movietitle")
     public String title;
 
     @ColumnInfo(name = "movieimage")
     public String image;
-
 
     public String getTitle() {
         return title;
@@ -33,6 +30,4 @@ public class Movie {
     public String getId() {
         return id;
     }
-
-
 }

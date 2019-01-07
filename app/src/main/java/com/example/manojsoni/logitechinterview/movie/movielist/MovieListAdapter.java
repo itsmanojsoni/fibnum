@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
 
-    private List<Movie>  movieList = new ArrayList<>();
+    private final List<Movie>  movieList = new ArrayList<>();
     private static final String TAG = MovieListAdapter.class.getSimpleName();
 
     private OnItemClicked listener;
@@ -26,7 +26,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         void onItemClicked(int position);
     }
 
-    public MovieListAdapter(OnItemClicked eventListener) {
+    MovieListAdapter(OnItemClicked eventListener) {
         listener = eventListener;
     }
 
@@ -36,12 +36,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.movie_list_item, parent, false);
 
-        MovieListAdapter.ViewHolder viewHolder = new MovieListAdapter.ViewHolder(view, listener);
-
-        return viewHolder;
+        return new MovieListAdapter.ViewHolder(view, listener);
     }
 
-    public void setMovieList(List<Movie> movies) {
+    void setMovieList(List<Movie> movies) {
         movieList.clear();
         movieList.addAll(movies);
         notifyDataSetChanged();
@@ -57,34 +55,29 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         return movieList.size();
     }
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private  ImageView movieIv;
         private TextView movieTitleTv;
 
-        private OnItemClicked eventlistner;
-
+        private OnItemClicked eventlistener;
 
         public ViewHolder(View itemView, OnItemClicked eventListener) {
             super(itemView);
-            this.eventlistner = eventListener;
+            this.eventlistener = eventListener;
             movieIv = itemView.findViewById(R.id.movieIv);
             movieTitleTv = itemView.findViewById(R.id.movieTitleTv);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d(TAG, "Item Clicked");
-                    eventlistner.onItemClicked(getAdapterPosition());
-                }
+            itemView.setOnClickListener(view -> {
+                Log.d(TAG, "Item Clicked");
+                eventlistener.onItemClicked(getAdapterPosition());
             });
         }
 
         public void onBind(Movie movie) {
             Glide.with(itemView.getContext())
-                    .load(movie.image)
+                    .load(movie.getImage())
                     .into(movieIv);
-            movieTitleTv.setText(movie.title);
+            movieTitleTv.setText(movie.getTitle());
         }
     }
 }

@@ -1,36 +1,22 @@
 package com.example.manojsoni.logitechinterview.fibNum;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-
 
 import io.reactivex.Observable;
 
 public class FibNumDataSource {
 
-    private static final String TAG = FibNumDataSource.class.getSimpleName();
-
     static {
         System.loadLibrary("native-lib");
     }
 
-
     public static Observable<List<String>> getFibNumFromJava(final  int number) {
-
-        return Observable.fromCallable(new Callable<List<String>>() {
-            @Override
-            public List<String> call() throws Exception {
-                return getFibNumber(number);
-
-            }
-        });
+        return Observable.fromCallable(() -> getFibNumber(number));
     }
 
     private static List<String> getFibNumber(final  int number) {
-
         long first=0;
         long second=1;
         long next;
@@ -65,7 +51,6 @@ public class FibNumDataSource {
                 String info = " (" + "JNI" + ")";
                 List<String> result = new ArrayList<>();
                 for (int i = 0; i < output.length; i++) {
-                    Log.d(TAG, "output  is = "+output[i]);
                     result.add(String.valueOf(output[i]) + info);
                 }
                 return result;

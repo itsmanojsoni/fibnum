@@ -1,8 +1,6 @@
 package com.example.manojsoni.logitechinterview.movie;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,8 +12,9 @@ import com.example.manojsoni.logitechinterview.model.Movie;
 import com.example.manojsoni.logitechinterview.movie.database.MovieDatabaseFragment;
 import com.example.manojsoni.logitechinterview.movie.movielist.MovieListFragment;
 
-import java.util.Collections;
-import java.util.List;
+/**
+ * Movie activity to handler movie related things
+ */
 
 public class MovieActivity extends AppCompatActivity implements
         MovieListFragment.OnActivityCallback, MovieDatabaseFragment.OnMovieUpdateCallback {
@@ -25,7 +24,6 @@ public class MovieActivity extends AppCompatActivity implements
     private MovieListFragment movieListFragment;
     private MovieDatabaseFragment movieDatabaseFragment;
     private MovieViewModel viewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,40 +40,32 @@ public class MovieActivity extends AppCompatActivity implements
     }
 
     private void subscribeToViewModel() {
-
+        Log.d(TAG, "subscribe to view model");
         viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-        // TODO: Use the ViewModel
-        viewModel.getMovieListLiveData().observe(this, new Observer<List<Movie>>() {
-            @Override
-            public void onChanged(@Nullable List<Movie> movies) {
-                if (movies != null && movies.size() > 0) {
-                    movieListFragment.setMovieListFragment(movies);
-                }
+
+        viewModel.getMovieListLiveData().observe(this, movies -> {
+            if (movies != null && movies.size() > 0) {
+                movieListFragment.setMovieListFragment(movies);
             }
         });
 
-        viewModel.getMovieListDatabaseLiveData().observe(this, new Observer<List<Movie>>() {
-            @Override
-            public void onChanged(@Nullable List<Movie> movies) {
-                movieDatabaseFragment.setMovieList(movies);
-            }
-        });
+        viewModel.getMovieListDatabaseLiveData().observe(this, movies -> movieDatabaseFragment.setMovieList(movies));
 
         viewModel.setLocalMovieDataSource(LocalMovieDataSource.getInstance(this));
-        viewModel.loadMovieList();
+        viewModel.loadMovieFromNetwork();
     }
 
     @Override
     public void onNextClicked() {
-        Log.d(TAG, "on Next Clicked. now display movies in database");
         movieDatabaseFragment =    MovieDatabaseFragment.newInstance();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, movieDatabaseFragment)
                 .addToBackStack(null)
                 .commit();
 
-        viewModel.loadMoviesDatabase(LocalMovieDataSource.getInstance(this));
-
+        if (viewModel != null) {
+            viewModel.loadMoviesFromDatabase(LocalMovieDataSource.getInstance(this));
+        }
     }
 
     @Override

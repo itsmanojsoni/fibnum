@@ -11,10 +11,7 @@ import com.example.manojsoni.logitechinterview.repository.MovieRemoteDataSource;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-//import io.reactivex.Observable;
-//import io.reactivex.disposables.Disposable;
 import rx.Observable;
 import rx.Observer;
 import rx.schedulers.Schedulers;
@@ -40,11 +37,10 @@ public class MovieViewModel extends ViewModel {
         this.localMovieDataSource = localMovieDataSource;
     }
 
-    public void loadMovieList() {
+    public void loadMovieFromNetwork() {
         MovieRemoteDataSource.getInstance().getMovieList()
                 .map(movies -> {
                     Collections.sort(movies, (movie1, movie2) -> movie1.getTitle().compareToIgnoreCase(movie2.getTitle()));
-
                     return movies;
                 }).subscribeOn(Schedulers.io())
                 .subscribe(new Observer<List<Movie>>() {
@@ -67,10 +63,10 @@ public class MovieViewModel extends ViewModel {
     }
 
 
-    public void loadMoviesDatabase(LocalMovieDataSource localMovieDataSource) {
-        Observable.fromCallable(() -> localMovieDataSource.getAllMovies()).subscribeOn(Schedulers.io())
+    public void loadMoviesFromDatabase(LocalMovieDataSource localMovieDataSource) {
+        Observable.fromCallable(localMovieDataSource::getAllMovies)
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<List<Movie>>() {
-
                     @Override
                     public void onNext(List<Movie> movies) {
                         if (movies != null && movies.size() > 0) {
@@ -80,14 +76,12 @@ public class MovieViewModel extends ViewModel {
 
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "Error getting movies from the database : " + e.getMessage());
                     }
-
                 });
     }
 

@@ -14,9 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.manojsoni.logitechinterview.R;
-import com.example.manojsoni.logitechinterview.database.LocalMovieDataSource;
 import com.example.manojsoni.logitechinterview.model.Movie;
-import com.example.manojsoni.logitechinterview.movie.movielist.MovieListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,6 @@ public class MovieDatabaseFragment extends Fragment implements MovieDatabaseAdap
 
         void deleteAllMovies();
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -70,7 +67,7 @@ public class MovieDatabaseFragment extends Fragment implements MovieDatabaseAdap
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = getActivity().findViewById(R.id.movieDatabaseList);
+        RecyclerView recyclerView = view.findViewById(R.id.movieDatabaseList);
 
         movieDatabaseAdapter = new MovieDatabaseAdapter(this);
 
@@ -79,17 +76,14 @@ public class MovieDatabaseFragment extends Fragment implements MovieDatabaseAdap
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(movieDatabaseAdapter);
 
-        Button deleteAll = getActivity().findViewById(R.id.deleteAllBtn);
+        Button deleteAll = view.findViewById(R.id.deleteAllBtn);
 
-        deleteAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (callback != null) {
-                    callback.deleteAllMovies();
-                    movieList.clear();
-                    movieDatabaseAdapter.setMovieList(movieList);
-                    movieDatabaseAdapter.notifyDataSetChanged();
-                }
+        deleteAll.setOnClickListener(view1 -> {
+            if (callback != null) {
+                callback.deleteAllMovies();
+                movieList.clear();
+                movieDatabaseAdapter.setMovieList(movieList);
+                movieDatabaseAdapter.notifyDataSetChanged();
             }
         });
     }

@@ -10,9 +10,7 @@ import java.util.List;
 public class LocalMovieDataSource implements MovieDataSource {
 
     private static volatile LocalMovieDataSource INSTANCE;
-
     private MovieDao movieDao;
-
 
     LocalMovieDataSource(MovieDao dao) {
         this.movieDao = dao;
@@ -38,7 +36,6 @@ public class LocalMovieDataSource implements MovieDataSource {
     @Override
     public void deleteAllMovies() {
         movieDao.deleteAllMovies();
-
     }
 
     @Override
