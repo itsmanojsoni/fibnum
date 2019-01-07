@@ -23,24 +23,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    private RecyclerView fibNumRv;
-
-    private Button nextBtn;
-    private Button clearBtn;
-    private Button resetBtn;
-    private Button retrieveBtn;
-
-    private FibNumAdapter fibNumAdapter;
-
     private static final int MAX_FIB_NUM_INDEX = 70;
-
-    private FibNumViewModel fibNumViewModel;
-
-    private List<String> fibNumberList = new ArrayList<>();
-
     private static final int NUMBER_PER_PAGE = 10;
 
+    private FibNumAdapter fibNumAdapter;
+    private FibNumViewModel fibNumViewModel;
+
+    private final List<String> fibNumberList = new ArrayList<>();
     private int startIndex = 0;
     private int endIndex = 0;
 
@@ -49,15 +38,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fibNumRv = findViewById(R.id.fibNumListRv);
-
-        nextBtn = findViewById(R.id.nextBtn);
-        clearBtn = findViewById(R.id.clearBtn);
-        resetBtn = findViewById(R.id.resetBtn);
-        retrieveBtn = findViewById(R.id.retrieveBtn);
+        Button nextBtn = findViewById(R.id.nextBtn);
+        Button clearBtn = findViewById(R.id.clearBtn);
+        Button resetBtn = findViewById(R.id.resetBtn);
+        Button retrieveBtn = findViewById(R.id.retrieveBtn);
 
         initUi();
-
 
         subsribeToViewModel();
 
@@ -66,14 +52,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(myIntent);
         });
 
-        clearBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startIndex = 0;
-                endIndex = 0;
-                updateUi();
-
-            }
+        clearBtn.setOnClickListener(view -> {
+            startIndex = 0;
+            endIndex = 0;
+            updateUi();
         });
 
         resetBtn.setOnClickListener(new View.OnClickListener() {
@@ -89,22 +71,22 @@ public class MainActivity extends AppCompatActivity {
         retrieveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startIndex = endIndex;
-                endIndex = startIndex + NUMBER_PER_PAGE;
-                updateUi();
+                if (startIndex + NUMBER_PER_PAGE < fibNumberList.size()) {
+                    startIndex = endIndex;
+                    endIndex = startIndex + NUMBER_PER_PAGE;
+                    updateUi();
+                }
             }
         });
     }
 
     private void initUi() {
-
+        RecyclerView fibNumRv = findViewById(R.id.fibNumListRv);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
         fibNumRv.setLayoutManager(layoutManager);
         fibNumAdapter = new FibNumAdapter();
         fibNumRv.setAdapter(fibNumAdapter);
-
     }
 
     @Override
@@ -117,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         fibNumViewModel.getFibNumberList().observe(this, new android.arch.lifecycle.Observer<List<String>>() {
             @Override
             public void onChanged(@Nullable List<String> fibNumList) {
-                Log.d(TAG, "Fib Number List changed");
                 fibNumberList.clear();
                 fibNumberList.addAll(fibNumList);
                 startIndex = 0;
@@ -126,16 +107,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // First time make JAVA fib default
-        if (fibNumViewModel != null) {
-            fibNumViewModel.getFibNumberList(FibNumViewModel.DATASOURCE.JAVA, MAX_FIB_NUM_INDEX);
-        }
+        fibNumViewModel.getFibNumberList(FibNumViewModel.DATASOURCE.JAVA, MAX_FIB_NUM_INDEX);
     }
 
     private void updateUi() {
-        if (endIndex <= fibNumberList.size()) {
-            Log.d(TAG, "start Index = "+startIndex);
-            Log.d(TAG, "end Index = "+endIndex);
+        if (startIndex < fibNumberList.size() && endIndex <= fibNumberList.size()) {
             fibNumAdapter.setData(startIndex, fibNumberList.subList(startIndex, endIndex));
         }
     }
@@ -148,20 +124,16 @@ public class MainActivity extends AppCompatActivity {
             case R.id.Java:
                 if (checked)
                     // Pirates are the best
-                    if (fibNumViewModel != null) {
                         startIndex = 0;
                         endIndex = 0;
                         fibNumViewModel.getFibNumberList(FibNumViewModel.DATASOURCE.JAVA, MAX_FIB_NUM_INDEX);
-                    }
 
                 break;
             case R.id.JNI:
                 if (checked) {
-                    if (fibNumViewModel != null) {
                         startIndex = 0;
                         endIndex = 0;
                         fibNumViewModel.getFibNumberList(FibNumViewModel.DATASOURCE.JNI, MAX_FIB_NUM_INDEX);
-                    }
                 }
                 break;
         }

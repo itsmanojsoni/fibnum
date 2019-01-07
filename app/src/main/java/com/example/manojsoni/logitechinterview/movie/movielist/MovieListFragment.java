@@ -99,10 +99,9 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
         deleteAllBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                movieList.clear();
                 startIndex = 0;
                 endIndex = 0;
-                updateAdapterList();
+                movieListAdapter.setMovieList(new ArrayList<>());
             }
         });
 
@@ -122,9 +121,11 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
             @Override
             public void onClick(View view) {
                 if (movieList != null && movieList.size() > 0) {
-                    startIndex = endIndex;
-                    endIndex = startIndex + NUMBER_PER_PAGE;
-                    updateAdapterList();
+                    if (startIndex +  NUMBER_PER_PAGE < movieList.size()) {
+                        startIndex = endIndex;
+                        endIndex = startIndex + NUMBER_PER_PAGE;
+                        updateAdapterList();
+                    }
                 }
             }
         });
@@ -150,11 +151,9 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.OnIt
 
     private void updateAdapterList() {
         if (movieListAdapter != null) {
-            if (endIndex > movieList.size()) {
-                endIndex = movieList.size();
+            if (startIndex < movieList.size() && endIndex <= movieList.size()) {
+                movieListAdapter.setMovieList(movieList.subList(startIndex, endIndex));
             }
-
-            movieListAdapter.setMovieList(movieList.subList(startIndex, endIndex));
         }
     }
 
